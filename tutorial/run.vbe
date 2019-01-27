@@ -1,0 +1,2 @@
+set ws=wscript.createobject("wscript.shell")  
+ws.run "f: & cd F:\work\scrapy\tutorial\ & run.bat",0  

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>老蔡算法</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+<table class="table table-striped table-dark">
+    <thead>
+    <tr>
+        <th scope="col">序号</th>
+        <th scope="col">比赛时间</th>
+        <th scope="col">VS</th>
+        <th scope="col">指数提点</th>
+        <th scope="col">让球提点</th>
+        <th scope="col">上下盘提点</th>
+        <th scope="col">老蔡算法结果1</th>
+        <th scope="col">老蔡算法结果2</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $list as $key=>$vo }
+        <tr>
+            <th scope="row">{$vo['name']}</th>
+            <td>{$vo['matchTime']}</td>
+            <td>{$vo['homeTeam']} VS {$vo['visitingTeam']}</td>
+            <td>{:sfpText(implode(',',$vo['laocaisuanfa']['zhishu']))}</td>
+            <td>{:sfpText($vo['laocaisuanfa']['rangqiu']['tidian'])}</td>
+            <td>{:sfpText($vo['laocaisuanfa']['shangxia']['tidian'])}</td>
+            <td>{:laocaisuanfa1($vo['laocaisuanfa']['zhishu'],$vo['laocaisuanfa']['rangqiu']['tidian'], $vo['laocaisuanfa']['shangxia']['tidian'])}</td>
+            <td>{:laocaisuanfa2($vo['laocaisuanfa']['zhishu'],$vo['laocaisuanfa']['rangqiu']['tidian'])}</td>
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
+</body>
+</html>
