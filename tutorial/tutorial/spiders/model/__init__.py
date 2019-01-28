@@ -6,3 +6,4 @@ from CompanyModel import CompanyModel
 from ShangxiaModel import ShangxiaModel
 from RangqiuModel import RangqiuModel
 from Fox008Model import Fox008Model
+from PeilvModel import PeilvModel

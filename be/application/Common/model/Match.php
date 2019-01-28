@@ -57,6 +57,19 @@ class Match extends Model
                 }
             }
         }
+
+
+        $inCompany = [
+            'Bet365', '威廉.希尔','立博','bwin','澳门彩票','伟德国际','必发'
+        ];
+        $peilvCompany = [
+            '威廉.希尔', '立博', 'Bet365', '伟德国际', '易胜博'
+        ];
+        $companyModel = new Company();
+        $inCompanyIds = $companyModel->whereIn('name', $inCompany)->column('id');
+        $peilvCompanyIds = $companyModel->whereIn('name', $peilvCompany)->column('id');
+
+
         // 获取指数提点结果
         $zhishuModel = new Zhishu();
 
@@ -109,11 +122,54 @@ class Match extends Model
         $result['rangqiu']['tidian'] = $rangqiuTidian;
 
 
-        $inCompany = [
-            'Bet365', '威廉.希尔','立博','bwin','澳门彩票','伟德国际','必发'
-        ];
-        $companyModel = new Company();
-        $inCompanyIds = $companyModel->whereIn('name', $inCompany)->column('id');
+        // 凯莉赔率
+
+        // 获取让球均值
+        $peilvModel = new Peilv();
+        $peilvList = $peilvModel->where('match', '=', $id)->whereIn('company', $peilvCompanyIds)->select();
+        if (!$peilvList || count($peilvList) == 0) {
+            throw new  Exception($id.'PeilvList Data Not Found');
+        }
+        $mapping = [1,2,3];
+
+        $peilvResultList = [];
+        foreach($mapping as $v) {
+            $field = '';
+            switch ($v) {
+                case 1:
+                    $field = 'zz';
+                    break;
+                case 2;
+                    $field = 'pz';
+                    break;
+                case 3;
+                    $field = 'kz';
+                    break;
+            }
+            $sum = 0;
+            foreach ($peilvList as $item) {
+                $sum += $item[$field];
+            }
+            $value = $sum / count($peilvList);
+            $peilvResultList[$v] = $value;
+        }
+        $value = null;
+        $peilvTidian = null;
+        foreach($peilvResultList as $jg => $v) {
+            $result['peilv']['avg'][$jg] = $v;
+            if ($v < $value || $value == null) {
+                $value = $v;
+                $peilvResultList = $jg;
+            }
+        }
+        if (abs($result['peilv']['avg'][1] - $result['peilv']['avg'][3]) > 1) {
+            $result['peilv']['tidian'] = $peilvResultList;
+        } else {
+            $result['peilv']['tidian'] = 0;
+        }
+
+        // ------------------ 凯莉赔率
+
         // 获取上下均值
         $shangxiaModel = new Shangxia();
         $shangxiaList = $shangxiaModel->where('match', '=', $id)->select();

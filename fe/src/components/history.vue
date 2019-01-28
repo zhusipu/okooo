@@ -29,6 +29,10 @@
               {{ sfpText(scope.row.laocaisuanfa.shangxia.tidian) }}<br>
               {{ scope.row.laocaisuanfa.shangxiacompany.avg[1].toFixed(3) }} | {{ scope.row.laocaisuanfa.shangxiacompany.avg[2].toFixed(3) }} | {{ scope.row.laocaisuanfa.shangxiacompany.avg[3].toFixed(3) }}
             </td>
+            <td class="is-center">
+              {{ sfpText(scope.row.laocaisuanfa.peilv.tidian) }}<br>
+              {{ scope.row.laocaisuanfa.peilv.avg[1].toFixed(3) }} | {{ scope.row.laocaisuanfa.peilv.avg[2].toFixed(3) }} | {{ scope.row.laocaisuanfa.peilv.avg[3].toFixed(3) }}
+            </td>
             <template v-if="scope.row.laocaisuanfa.fox008 !== null">
               <td class="is-center">
                 <Poptip trigger="hover" title="变化" placement="bottom" @on-popper-show="_getFox008Change(scope.row.laocaisuanfa.fox008.id)">
@@ -83,6 +87,7 @@
             <td class="is-center">X</td>
             <td class="is-center">X</td>
             <td class="is-center">X</td>
+            <td class="is-center">X</td>
           </template>
           <td class="is-center"><template v-if="scope.row.laocaisuanfa !== null && scope.row.laocaisuanfa.fox008 !== null" class="is-center">{{ sfpText(rangqiuResult(scope.row.laocaisuanfa.fox008.pk, scope.row.homeTeamFen, scope.row.visitingTeamFen, 2)) }}</template></td>
         </template>
@@ -120,6 +125,7 @@ export default {
         { title: '让球', name: 'rangqiu', align: 'center' },
         { title: '上下盘', name: 'shangxia', align: 'center' },
         { title: '上下盘公司', name: 'shangxiacompany', align: 'center' },
+        { title: '凯利', name: 'kailv', align: 'center' },
         { title: 'fox', name: 'fox', align: 'center' },
         { title: 'fox1', name: 'fox1', align: 'center' },
         { title: 'Z-S-F', tooltip: '指数+上下盘+Fox008', name: 'laicaisuanfa1', align: 'center' },

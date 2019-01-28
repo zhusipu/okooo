@@ -9,6 +9,7 @@ from model import CompanyModel
 from model import ShangxiaModel
 from model import RangqiuModel
 from model import Fox008Model
+from model import PeilvModel
 from lxml import etree
 from utils import resultToFormat
 import time
@@ -21,7 +22,7 @@ sys.setdefaultencoding('utf8')
 class OkoooSpider(scrapy.Spider):
     name = "okooo"
     year = time.strftime('%Y',time.localtime(time.time()))
-    c = 2
+    c = 100
     week_day_dict = {
       0 : '周一',
       1 : '周二',
@@ -35,35 +36,55 @@ class OkoooSpider(scrapy.Spider):
         matchModel = MatchModel()
         matchModel.updateSyncTime()
         now_time = datetime.datetime.now()
-        i = 0
-        while i <= self.c:
-            date = (now_time - i * Day()).strftime('%Y%m%d')
-            yield scrapy.Request(url='https://m.fox008.com/mobile/dataCatList?playType=YP&matchDate=' + date, meta={'date':date}, callback=self.parseFox)
-            i = i + 1
-        i = 0  
-        while i < 2:
-            date = (now_time + i * Day()).strftime('%Y%m%d')
-            yield scrapy.Request(url='https://m.fox008.com/mobile/dataCatList?playType=YP&matchDate=' + date, meta={'date':date}, callback=self.parseFox)
-            i = i + 1
-        i = 0
-        while i < self.c:
-          date = (now_time - i * Day()).strftime('%Y-%m-%d')
-          yd = (now_time - i * Day()).strftime('%Y-%m-%d')
-          rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
-          rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
-          rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
-          yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/zhishu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parse)
-          i = i + 1
+        # i = 0
+        # while i <= self.c:
+        #     date = (now_time - i * Day()).strftime('%Y%m%d')
+        #     yield scrapy.Request(url='https://m.fox008.com/mobile/dataCatList?playType=YP&matchDate=' + date, meta={'date':date}, callback=self.parseFox)
+        #     i = i + 1
+        # i = 0  
+        # while i < 2:
+        #     date = (now_time + i * Day()).strftime('%Y%m%d')
+        #     yield scrapy.Request(url='https://m.fox008.com/mobile/dataCatList?playType=YP&matchDate=' + date, meta={'date':date}, callback=self.parseFox)
+        #     i = i + 1
+        # i = 0
+        # while i < self.c:
+        #   date = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   yd = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
+        #   rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
+        #   rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
+        #   yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/zhishu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parse)
+        #   i = i + 1
         
-        i = 0
-        while i < 3:
-          date = (now_time + i * Day()).strftime('%Y-%m-%d')
-          yd = (now_time - i * Day()).strftime('%Y-%m-%d')
-          rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
-          rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
-          rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
-          yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/zhishu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parse)
-          i = i + 1
+        # i = 0
+        # while i < 3:
+        #   date = (now_time + i * Day()).strftime('%Y-%m-%d')
+        #   yd = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
+        #   rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
+        #   rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
+        #   yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/zhishu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parse)
+        #   i = i + 1
+
+        # i = 0
+        # while i < self.c:
+        #   date = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   yd = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
+        #   rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
+        #   rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
+        #   yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/shangxia/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parsmShangxiaPage)
+        #   i = i + 1
+
+        # i = 0
+        # while i < self.c:
+        #   date = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   yd = (now_time - i * Day()).strftime('%Y-%m-%d')
+        #   rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
+        #   rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
+        #   rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
+        #   yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/rangqiu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parsmRangqiuPage)
+        #   i = i + 1
 
         i = 0
         while i < self.c:
@@ -72,17 +93,7 @@ class OkoooSpider(scrapy.Spider):
           rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
           rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
           rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
-          yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/shangxia/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parsmShangxiaPage)
-          i = i + 1
-
-        i = 0
-        while i < self.c:
-          date = (now_time - i * Day()).strftime('%Y-%m-%d')
-          yd = (now_time - i * Day()).strftime('%Y-%m-%d')
-          rc1 = (now_time - (i - 1) * Day()).strftime('%Y-%m-%d')
-          rc2 = (now_time - (i - 2) * Day()).strftime('%Y-%m-%d')
-          rc3 = (now_time - (i - 3) * Day()).strftime('%Y-%m-%d')
-          yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/rangqiu/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parsmRangqiuPage)
+          yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/peilv/' + date + '/', meta={'date':date, 'yd': yd, 'rc1': rc1, 'rc2': rc2, 'rc3': rc3}, callback=self.parsmPeilvPage)
           i = i + 1
 
     def parseFox(self, response):
@@ -122,6 +133,13 @@ class OkoooSpider(scrapy.Spider):
         i = 1
         while i <= page:
             yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/rangqiu/'+response.meta['date']+'/?PageID=' + str(i), meta=response.meta, callback=self.parseRangqiu)
+            i = i + 1
+
+    def parsmPeilvPage(self, response):
+        page = int(response.xpath("//div[@class='pagination']//table//tr//td//span/text()")[1].extract())
+        i = 1
+        while i <= page:
+            yield scrapy.Request(url='http://www.okooo.com/jingcai/shuju/peilv/'+response.meta['date']+'/?PageID=' + str(i), meta=response.meta, callback=self.parsePeilv)
             i = i + 1
 
     def parse(self, response):
@@ -391,6 +409,80 @@ class OkoooSpider(scrapy.Spider):
                     'peifulv':peifulv,
                 }
                 rangqiuModel.save(rangqiu)
+
+    def parsePeilv(self, response):
+        data = response.xpath("//div[@class='clearfix container_wrapper pankoudata']")
+        matchModel = MatchModel()
+        companyModel = CompanyModel()
+        peilvModel = PeilvModel()
+        for i in data:
+            matchName = i.xpath("div//p//b/text()")[0].extract()
+            matchTime = i.xpath("div//p//b")[2].extract()
+            matchTime = etree.HTML(matchTime).xpath("//b/text()")
+            year = None
+            if matchTime[0][:5] == response.meta['yd'][-5:]:
+                year = response.meta['yd'][:4]
+            elif matchTime[0][:5] == response.meta['rc1'][-5:]:
+                year = response.meta['rc1'][:4]
+            elif matchTime[0][:5] == response.meta['rc2'][-5:]:
+                year = response.meta['rc2'][:4]
+            elif matchTime[0][:5] == response.meta['rc3'][-5:]:
+                year = response.meta['rc3'][:4]
+            else:
+                continue
+            matchTime = year + '-' + matchTime[0] + ':00'
+            if self.get_week_day(datetime.datetime.strptime(matchTime[0:10], '%Y-%m-%d')) == matchName[0:2]:
+                matchKey = matchTime[:4] + matchTime[5:7] + matchTime[8:10] + matchName[-3:]
+                pass
+            else:
+                ## 判断前两天是否满足
+                g = -2
+                mingzhongdate = None
+                while g < 2:
+                    tmpdate = datetime.datetime.strptime(matchTime[0:10], '%Y-%m-%d')
+                    tmpdate = (tmpdate + g * Day())
+                    if self.get_week_day(tmpdate) ==  matchName[0:2]:
+                        mingzhongdate = tmpdate
+                        break
+                    g = g + 1
+                if mingzhongdate == None:
+                    continue
+                else:
+                    mingzhongdate = datetime.datetime.strftime(mingzhongdate, "%Y%m%d")
+                    matchKey = mingzhongdate + matchName[-3:]
+            match = matchModel.getMatchIdByKey(matchKey)
+            if match == None:
+                continue
+            
+            list = i.xpath("table//tr")
+
+            e = 0
+            for item in list:
+                e = e + 1
+                if e < 3:
+                    continue
+                itemData = item.xpath("td").extract()
+                if len(itemData) == 5:
+                    continue
+                v1 = itemData[0]
+                v5 = itemData[5]
+                v6 = itemData[6]
+                v7 = itemData[7]
+                company = etree.HTML(v1).xpath("//td//span/text()")[0]
+                company = companyModel.getCompanyIdByName(company)
+                if len(etree.HTML(v5).xpath("//td//a//span/text()")) == 0:
+                    continue
+                zz = self.myFloat(etree.HTML(v5).xpath("//td//a//span/text()")[0])
+                pz = self.myFloat(etree.HTML(v6).xpath("//td//a//span/text()")[0])
+                kz = self.myFloat(etree.HTML(v7).xpath("//td//a//span/text()")[0])
+                peilv = {
+                    'match':match,
+                    'company':company,
+                    'zz':zz,
+                    'pz':pz,
+                    'kz':kz
+                }
+                peilvModel.save(peilv)
 
     def get_week_day(self, date):
         day = date.weekday()

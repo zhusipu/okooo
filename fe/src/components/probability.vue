@@ -80,15 +80,18 @@ export default {
         // ['zhishu'],
         // ['rangqiu'],
         // ['shangxiapan'],
-        // ['fox'],
-        ['fox1'],
-        // ['zhishu', 'fox'],
+        // ['fox']
+        // ['fox1'],
+        // ['peilv']
+        ['shangxiapan', 'peilv', 'rangqiu']
+        // ['rangqiu', 'fox1', 'peilv'],
+        // ['shangxia', 'fox1', 'peilv']
         // ['zhishu', 'rangqiu', 'shangxiapan', 'fox'],
         // ['zhishu', 'rangqiu', 'shangxiapan'],
         // ['zhishu', 'rangqiu'],
         // ['zhishu', 'rangqiu', 'fox'],
         // ['zhishu', 'shangxiapan'],
-        ['zhishu', 'shangxiapan', 'fox1']
+        // ['zhishu', 'shangxiapan', 'fox1']
         // ['rangqiu', 'shangxiapan', 'fox'],
         // ['rangqiu', 'shangxiapan'],
         // ['shangxiapan', 'fox'],
@@ -100,6 +103,7 @@ export default {
           'zhishu': null,
           'rangqiu': null,
           'shangxiapan': null,
+          'peilv': null,
           'fox888': null,
           'fox1': null
         }
@@ -108,6 +112,10 @@ export default {
           param.zhishu = item.laocaisuanfa.zhishu
           param.rangqiu = [item.laocaisuanfa.rangqiu.tidian]
           param.shangxiapan = [item.laocaisuanfa.shangxia.tidian]
+          // if (item.laocaisuanfa.peilv.tidian === 0) {
+          //   continue
+          // }
+          param.peilv = [item.laocaisuanfa.peilv.tidian]
           if (item.laocaisuanfa.fox008 !== null) {
             param.fox = [item.laocaisuanfa.fox008.zt]
             param.fox1 = [item.laocaisuanfa.fox008Change.zt1]
@@ -150,18 +158,18 @@ export default {
           var saiguo = rangqiuResult(pk, item.homeTeamFen, item.visitingTeamFen, 2)
           var forecastResult = publicResult(formatParam)
           if (typeof forecastResult === 'object') {
+            result[paramKey].total++
             if (saiguo + '' === '2') {
               result[paramKey].success++
-              console.log(pk, item.homeTeamFen, item.visitingTeamFen)
               result[paramKey].listPing.push(item)
               break
-            }
-            result[paramKey].total++
-            for (let f = 0; f < forecastResult.length; f++) {
-              if (forecastResult[f] + '' === saiguo + '') {
-                result[paramKey].success++
-                result[paramKey].listSheng.push(item)
-                break
+            } else {
+              for (let f = 0; f < forecastResult.length; f++) {
+                if (forecastResult[f] + '' === saiguo + '') {
+                  result[paramKey].success++
+                  result[paramKey].listSheng.push(item)
+                  break
+                }
               }
             }
           } else {
